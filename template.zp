@@ -1,0 +1,10 @@
+(module "template"
+  (exports
+    (list "template" template))
+
+  (template (lambda (str values)
+    (hash:keys-reduce
+      (lambda (str k)
+        (string:substitute str (++ "{{" k "}}") (values k)))
+      str
+      values))))
