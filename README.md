@@ -1,7 +1,7 @@
 # mustache
 
 A minimal templating engine in and for zepto.
-It is a mustache port.
+It is a [mustache](http://mustache.github.com) port (no lambdas and custom delimiters, otherwise complete to my best of knowledge).
 
 # Usage
 
