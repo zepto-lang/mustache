@@ -10,7 +10,7 @@ There is a single endpoint at the moment, called `template`:
 (load "template.zp")
 (define template (import "template:template"))
 ; Here is an example from the test suite;
-; sorry for those weird linebreaks, they are supposed to make this readable
+; sorry for those weird linebreaks, they are supposed to make this readable (i know it's still a mess)
 (minitest:assert-equal
   "
 <h1>I am a title</h1>
