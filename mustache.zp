@@ -1,7 +1,6 @@
-(module "template"
+(module "mustache"
   (exports
-    (list "template" template)
-    (list "find-substr" find-substr))
+    (list "template" template))
 
   (curry-flip (lambda (f x)
     (lambda (y) (f y x))))
@@ -130,9 +129,15 @@
           str))
         "{{!" str)))
 
+  (replace-partial (lambda (str values) str))
+
+  (replace-fun (lambda (str values) str))
+
   (template (lambda (str values)
     (|>
       (delay (replace-comment str))
+      (curry-flip replace-partial values)
+      (curry-flip replace-fun values)
       (curry-flip replace-section values)
       (curry-flip replace-inv-section values)
       (curry-flip replace-unescaped values)

@@ -1,6 +1,6 @@
-(load "template/template")
+(load "mustache")
 (load "minitest/minitest")
-(define template (import "template:template"))
+(define template (import "mustache:template"))
 (define minitest:assert-equal (import "minitest:assert-equal"))
 ((import "minitest:colorize") #t)
 ((import "minitest:verbose") #t)

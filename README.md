@@ -7,8 +7,8 @@ It is a [mustache](http://mustache.github.com) port (no lambdas and custom delim
 
 There is a single endpoint at the moment, called `template`:
 ```clojure
-(load "template.zp")
-(define template (import "template:template"))
+(load "mustache/mustache")
+(define template (import "mustache:template"))
 ; Here is an example from the test suite;
 ; sorry for those weird linebreaks, they are supposed to make this readable (i know it's still a mess)
 (minitest:assert-equal
