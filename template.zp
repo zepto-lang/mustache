@@ -13,7 +13,10 @@
         (let ((m (substring s 0 (length p))))
           (if (string=? m p)
             i
-            (internal (string:tail s) p (add1 i))))))
+            (let ((x (add1 (string:find (string:tail s) (string:head p)))))
+              (if (< x 1)
+                -1
+                (internal (substring s x (length s)) p (+ i x))))))))
     (internal str sub 0)))
 
   (substr-in? (lambda (str sub)
@@ -46,8 +49,8 @@
       ((hash-map? values) (template str values))
       ((list? values)
         (if (all? hash-map? values)
-          (string:join (map (curry template str) values) ""))
-          (string:join (map (lambda (x) (template str (make-hash "." x))) values) ""))
+          (string:join (map (curry template str) values) "")
+          (string:join (map (lambda (x) (template str (make-hash "." x))) values) "")))
       (else str))))
 
   (_get (lambda (values key)
