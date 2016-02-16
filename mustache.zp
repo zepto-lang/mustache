@@ -1,25 +1,9 @@
 (module "mustache"
-  (exports
+  (export
     (list "template" template))
 
   (curry-flip (lambda (f x)
     (lambda (y) (f y x))))
-
-  (find-substr (lambda (str sub)
-    (define (internal s p i)
-      (if (< (length s) (length p))
-       -1
-        (let ((m (substring s 0 (length p))))
-          (if (string=? m p)
-            i
-            (let ((x (add1 (string:find (string:tail s) (string:head p)))))
-              (if (< x 1)
-                -1
-                (internal (substring s x (length s)) p (+ i x))))))))
-    (internal str sub 0)))
-
-  (substr-in? (lambda (str sub)
-    (< -1 (find-substr str sub))))
 
   (escape (lambda (str)
     (string:substitute
@@ -34,7 +18,7 @@
       "&lt;")))
 
   (each-occurrence (lambda (f sub str)
-    (let ((first (find-substr str sub)))
+    (let ((first (string:find str sub)))
       (if (or (< first 0) (string:empty? str))
         str
         (let ((new (f (substring str first (length str)))))
@@ -48,8 +32,8 @@
       ((hash-map? values) (template str values))
       ((list? values)
         (if (all? hash-map? values)
-          (string:join (map (curry template str) values) "")
-          (string:join (map (lambda (x) (template str (make-hash "." x))) values) "")))
+          (string:join (map (curry template str) values))
+          (string:join (map (lambda (x) (template str (make-hash "." x))) values))))
       (else str))))
 
   (_get (lambda (values key)
@@ -58,8 +42,8 @@
 
   (replace-normal (lambda (str values)
     (each-occurrence (lambda (str)
-      (if (substr-in? str "}}")
-        (let* ((k (substring str 2 (find-substr str "}}")))
+      (if (in? str "}}")
+        (let* ((k (substring str 2 (string:find str "}}")))
                (v (_get values k)))
           (if (nil? v)
             str
@@ -72,8 +56,8 @@
 
   (replace-unescaped (lambda (str values)
     (each-occurrence (lambda (str)
-      (if (substr-in? str "}}}")
-        (let* ((k (substring str 3 (find-substr str "}}}")))
+      (if (in? str "}}}")
+        (let* ((k (substring str 3 (string:find str "}}}")))
                (v (_get values k)))
           (if (nil? v)
             str
@@ -86,11 +70,11 @@
 
   (replace-section (lambda (str values)
     (each-occurrence (lambda (str)
-      (if (substr-in? str "}}")
-        (let* ((k (substring str 3 (find-substr str "}}")))
+      (if (in? str "}}")
+        (let* ((k (substring str 3 (string:find str "}}")))
                (v (_get values k))
                (end-marker (++ "{{/" k "}}"))
-               (section-end (find-substr str end-marker)))
+               (section-end (string:find str end-marker)))
           (cond
             ((< section-end 0) str)
             ((falsy? v) (substring str (+ section-end (length end-marker)) (length str)))
@@ -103,11 +87,11 @@
 
   (replace-inv-section (lambda (str values)
     (each-occurrence (lambda (str)
-      (if (substr-in? str "}}")
-        (let* ((k (substring str 3 (find-substr str "}}")))
+      (if (in? str "}}")
+        (let* ((k (substring str 3 (string:find str "}}")))
                (v (_get values k))
                (end-marker (++ "{{/" k "}}"))
-               (section-end (find-substr str end-marker)))
+               (section-end (string:find str end-marker)))
           (cond
             ((< section-end 0) str)
             ((truthy? v) (substring str (+ section-end (length end-marker)) (length str)))
@@ -120,8 +104,8 @@
 
   (replace-comment (lambda (str)
     (each-occurrence (lambda (str)
-      (if (substr-in? str "}}")
-        (let* ((i (find-substr str "}}")))
+      (if (in? str "}}")
+        (let* ((i (string:find str "}}")))
           (string:substitute
             str
             (substring str 0 (+ i 2))
