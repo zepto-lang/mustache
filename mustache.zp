@@ -38,7 +38,7 @@
 
   (_get (lambda (values key)
     (let ((undotted (string:split key #\.)))
-      (reduce (lambda (acc k) (if (hash-map? acc) (acc k) (nil))) values undotted))))
+      (get-from values undotted))))
 
   (replace-normal (lambda (str values)
     (each-occurrence (lambda (str)

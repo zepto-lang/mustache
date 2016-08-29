@@ -3,7 +3,13 @@
 A minimal templating engine in and for zepto.
 It is a [mustache](http://mustache.github.com) port (no lambdas and custom delimiters, otherwise complete to my best of knowledge).
 
-# Usage
+## Installation
+
+```
+zeps install zepto-lang/mustache
+```
+
+## Usage
 
 There is a single endpoint at the moment, called `template`:
 ```clojure
