@@ -3,6 +3,9 @@
 A minimal templating engine in and for zepto.
 It is a [mustache](http://mustache.github.com) port (no lambdas and custom delimiters, otherwise complete to my best of knowledge).
 
+The package documentation can be found in `docs/index.html`
+or generated via zeps' `docgen` command.
+
 ## Installation
 
 ```

@@ -118,6 +118,16 @@
   (replace-fun (lambda (str values) str))
 
   (template (lambda (str values)
+    "takes the template string and a hashmap of values to interpolate.
+
+     The documentation of the mustache format can be found
+     <a href=\"https://mustache.github.io/mustache.5.html\">here</a>.
+
+     params:
+      - str: the template string
+      - values: a hashmap of substitute keys and values(keys and values must be strings)
+     complexity: O(n)
+     returns: the templated string"
     (|>
       (delay (replace-comment str))
       (curry-flip replace-partial values)
